@@ -41,7 +41,7 @@ GROUP BY SR.FirstName
 ORDER BY TOTAL_SALES DESC;
 ```
 
-**Screenshot**: `ss/q1.png`
+**Screenshot**: ![Total Sales by Each Sales Representative](/ss/q1.png)
 
 ---
 
@@ -54,7 +54,7 @@ JOIN PRODUCTS AS P ON S.ProductID = P.ProductID
 GROUP BY S.STORELOCATION;
 ```
 
-**Screenshot**: `ss/Q2.png`
+**Screenshot**: ![Store Location](ss/Q2.png)
 
 ---
 
@@ -68,7 +68,7 @@ GROUP BY P.CATEGORY
 ORDER BY t_SALES DESC LIMIT 1;
 ```
 
-**Screenshot**: `ss/Q3.png`
+**Screenshot**: ![Product Category](ss/Q3.png)
 
 ---
 
@@ -78,7 +78,7 @@ ORDER BY t_SALES DESC LIMIT 1;
 SELECT AVG(QUANTITY) AS AVG_QUAN FROM SALES;
 ```
 
-**Screenshot**: `ss/Q4.png`
+**Screenshot**: ![Sold per Sale](ss/Q4.png)
 
 ---
 
@@ -91,7 +91,7 @@ JOIN SALES AS S ON C.CUSTOMERID = S.CUSTOMERID
 ORDER BY S.TOTALAMOUNT DESC LIMIT 1;
 ```
 
-**Screenshot**: `ss/Q5.png`
+**Screenshot**: ![Highest Purchase Count](ss/Q5.png)
 
 ---
 
@@ -104,7 +104,7 @@ GROUP BY D_month
 ORDER BY D_month;
 ```
 
-**Screenshot**: `ss/Q6.png`
+**Screenshot**: ![Total Sales](ss/Q6.png)
 
 ---
 
@@ -117,7 +117,7 @@ GROUP BY STORELOCATION
 ORDER BY s_PER DESC;
 ```
 
-**Screenshot**: `ss/Q7.png`
+**Screenshot**: ![Performance By Region](ss/Q7.png)
 
 ---
 
@@ -131,7 +131,7 @@ GROUP BY PRODUCTNAME
 ORDER BY TOTAL_SALES DESC;
 ```
 
-**Screenshot**: `ss/Q8.png`
+**Screenshot**: ![Sales Product](ss/Q8.png)
 
 ---
 
@@ -141,7 +141,7 @@ ORDER BY TOTAL_SALES DESC;
 SELECT AVG(TOTALAMOUNT) as avg_sale_per_transaction FROM SALES;
 ```
 
-**Screenshot**: `ss/Q9.png`
+**Screenshot**: ![Average Sales](ss/Q9.png)
 
 ---
 
@@ -154,7 +154,7 @@ JOIN SALES_REP AS SR ON S.SalesRepID = SR.SalesRepID
 GROUP BY FirstName;
 ```
 
-**Screenshot**: `ss/Q10.png`
+**Screenshot**: ![Sales Transaction](ss/Q10.png)
 
 ---
 
