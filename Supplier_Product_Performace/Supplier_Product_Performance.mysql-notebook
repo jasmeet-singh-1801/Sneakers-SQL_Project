@@ -1,0 +1,1342 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "DB Notebook",
+    "content": "\\about\nUSE sneakers;\n\n\n-- 1. What is the total sales amount for each supplier?\nSELECT SUP.SupplierName, SUM(S.TotalAmount) AS Sales_Amount\nFROM sales AS S\nJOIN products AS P\nON S.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName;\n\n\n-- 2. Which supplier has the highest average unit price for their products?\nSELECT SUP.SupplierName,AVG(P.UnitPrice) as Avg_Price\nFROM products AS P\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Avg_Price DESC LIMIT 1;\n\n\n-- 3. How many different products are provided by each supplier?\nSELECT COUNT(DISTINCT P.ProductId) AS Different_Product, SUP.SupplierName\nFROM suppliers AS SUP\nJOIN products AS P\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName;\n\n\n-- 4. What is the average total sales amount for products supplied by each supplier?\nSELECT SUP.SupplierName, AVG(S.TotalAmount) AS Avg_Sales\nFROM sales AS S\nJOIN products AS P\nON S.ProductID = P.ProductId\nJOIN suppliers SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName;\n\n\n-- 5. Which supplier's products have the highest total sales quantity?\nSELECT SUP.SupplierName,SUM(S.Quantity) AS Sales_Quantity\nFROM sales AS S\nJOIN products AS P\nON P.ProductID = S.ProductID\nJOIN suppliers SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Sales_Quantity DESC LIMIT 1;\n\n\n-- 6. What is the most common category of products supplied by each supplier?\nSELECT SUP.SupplierName ,P.Category, Count(*) as Number_Comman_Category\nFROM products AS P\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName,P.Category\nORDER BY Number_Comman_Category DESC ;\n\n\n\n-- 7. How does the performance of products from different suppliers compare?\nSELECT SUP.SupplierName, SUM(TotalAmount) AS Total_Sales\nFROM sales AS S\nJOIN products AS P\nON S.ProductID = P.ProductID\nJOIN suppliers as SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName \nORDER BY Total_Sales DESC;\n\n\n-- 8. What is the distribution of product categories provided by each supplier?\nSELECT SUP.SupplierName, P.Category, COUNT(*) AS Distribution\nFROM products AS P\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName , P.Category ;\n\n\n-- 9. How many products from each supplier are in the top 10 best-selling products?\n\n-- Used CTE to extract top 10 products by sales\nWITH TOP_10 AS (\n    SELECT ProductID, SUM(TotalAmount) AS Total_Sales\n    FROM sales \n    GROUP BY ProductID\n    ORDER BY Total_Sales DESC Limit 10\n)\n-- Used the Top 10 CTE to join it with other tables, and count how many of those top product each supplier provides\n\nSELECT SUP.SupplierName, COUNT(*) AS Product_Count\nFROM TOP_10 AS T\nJOIN products as P\nON T.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Product_Count DESC;\n\n\n-- 10. What is the average sales amount per product category for each supplier?\nSELECT SUP.SupplierName,P.Category,AVG(S.TotalAmount) as Avg_Sales\nFROM sales as S\nJOIN products as P\nON S.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON SUP.SupplierID = P.SupplierID\nGROUP BY SUP.SupplierName,P.Category;\n\n\n",
+    "options": {
+        "tabSize": 4,
+        "indentSize": 4,
+        "insertSpaces": true,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": {
+        "cursorState": [
+            {
+                "inSelectionMode": false,
+                "selectionStart": {
+                    "lineNumber": 12,
+                    "column": 27
+                },
+                "position": {
+                    "lineNumber": 12,
+                    "column": 27
+                }
+            }
+        ],
+        "viewState": {
+            "scrollLeft": 0,
+            "firstPosition": {
+                "lineNumber": 1,
+                "column": 1
+            },
+            "firstPositionDeltaTop": 0
+        },
+        "contributionsState": {
+            "editor.contrib.folding": {},
+            "editor.contrib.wordHighlighter": false
+        }
+    },
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 1,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 2,
+                            "content": "Welcome to the MySQL Shell - DB Notebook.\n\nPress Ctrl+Enter to execute the code block.\n\nExecute \\sql to switch to SQL, \\js to JavaScript and \\ts to TypeScript mode.\nExecute \\help or \\? for help;",
+                            "language": "ansi"
+                        }
+                    ]
+                },
+                "currentHeight": 141,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 6
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 2,
+                "end": 4,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 2,
+                            "index": 0,
+                            "resultId": "ce5a4338-341a-4849-e971-4c4b2af7e6fa",
+                            "content": "OK, 0 records retrieved in 0.631ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 13
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 13,
+                            "length": 2
+                        },
+                        "contentStart": 12,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 5,
+                "end": 14,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "968c3b92-6a5a-4203-e21b-e9592f697d76"
+                    ]
+                },
+                "currentHeight": 167,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 261
+                        },
+                        "contentStart": 56,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 261,
+                            "length": 2
+                        },
+                        "contentStart": 260,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "968c3b92-6a5a-4203-e21b-e9592f697d76",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "259965"
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "149985"
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "179970"
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "159980"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Sales_Amount",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 4 records retrieved in 1.963ms"
+                    },
+                    "totalRowCount": 4,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 1. What is the total sales amount for each supplier?\nSELECT SUP.SupplierName, SUM(S.TotalAmount) AS Sales_Amount\nFROM sales AS S\nJOIN products AS P\nON S.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 15,
+                "end": 23,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "21d308f9-cbf4-409e-a68d-50ab3c69a283"
+                    ]
+                },
+                "currentHeight": 92,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 262
+                        },
+                        "contentStart": 76,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 262,
+                            "length": 2
+                        },
+                        "contentStart": 261,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "21d308f9-cbf4-409e-a68d-50ab3c69a283",
+                    "rows": [
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "8612.3333"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Avg_Price",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 2.639ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 2. Which supplier has the highest average unit price for their products?\nSELECT SUP.SupplierName,AVG(P.UnitPrice) as Avg_Price\nFROM products as P\nJOIN suppliers as SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Avg_Price DESC LIMIT 1",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 24,
+                "end": 31,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "a2a57e66-fdd9-4b6f-b666-078ff629e6e8"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 239
+                        },
+                        "contentStart": 65,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 239,
+                            "length": 2
+                        },
+                        "contentStart": 238,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "a2a57e66-fdd9-4b6f-b666-078ff629e6e8",
+                    "rows": [
+                        {
+                            "0": 10,
+                            "1": " AthleticZone Corp."
+                        },
+                        {
+                            "0": 15,
+                            "1": "fitness footwear ltd."
+                        },
+                        {
+                            "0": 15,
+                            "1": "SportsTrend Enterprises"
+                        },
+                        {
+                            "0": 10,
+                            "1": "UrbanKicks India"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Different_Product",
+                            "field": "0",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "SupplierName",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 4 records retrieved in 4.168ms"
+                    },
+                    "totalRowCount": 4,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 3. How many different products are provided by each supplier?\nSELECT COUNT(DISTINCT P.ProductId) AS Different_Product, SUP.SupplierName\nFROM suppliers as SUP\nJOIN products as P\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 32,
+                "end": 41,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "5989955e-919b-44eb-e358-2c2c11fdbacf"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 284
+                        },
+                        "contentStart": 85,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 284,
+                            "length": 2
+                        },
+                        "contentStart": 283,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "5989955e-919b-44eb-e358-2c2c11fdbacf",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "12998.2500"
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "14998.5000"
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "17997.0000"
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "15998.0000"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Avg_Sales",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 4 records retrieved in 4.325ms"
+                    },
+                    "totalRowCount": 4,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 4. What is the average total sales amount for products supplied by each supplier?\nSELECT SUP.SupplierName, AVG(S.TotalAmount) AS Avg_Sales\nFROM sales as S\nJOIN products as P\nON S.ProductID = P.ProductId\nJOIN suppliers SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 42,
+                "end": 52,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "1d94be29-32d3-46bf-96f2-f7d7cbc4bdd5"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 308
+                        },
+                        "contentStart": 71,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 308,
+                            "length": 2
+                        },
+                        "contentStart": 307,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "1d94be29-32d3-46bf-96f2-f7d7cbc4bdd5",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "35"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Sales_Quantity",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 6.343ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 5. Which supplier's products have the highest total sales quantity?\nSELECT SUP.SupplierName,SUM(S.Quantity) AS Sales_Quantity\nFROM sales AS S\nJOIN products AS P\nON P.ProductID = S.ProductID\nJOIN suppliers SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Sales_Quantity DESC LIMIT 1",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 53,
+                "end": 62,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "4bccee4a-7bcf-4022-9224-06e9690aca49"
+                    ]
+                },
+                "currentHeight": 347,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 299
+                        },
+                        "contentStart": 78,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 299,
+                            "length": 3
+                        },
+                        "contentStart": 298,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "4bccee4a-7bcf-4022-9224-06e9690aca49",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Training",
+                            "2": 5
+                        },
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Hiking",
+                            "2": 5
+                        },
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Running",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Skateboarding",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Running",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Casual",
+                            "2": 5
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "Casual",
+                            "2": 5
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "Tennis",
+                            "2": 5
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "Fitness",
+                            "2": 5
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "Fashion",
+                            "2": 5
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Category",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Number_Comman_Category",
+                            "field": "2",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 10 records retrieved in 2.346ms"
+                    },
+                    "totalRowCount": 10,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 6. What is the most common category of products supplied by each supplier?\nSELECT SUP.SupplierName ,P.Category, Count(*) as Number_Comman_Category\nFROM products AS P\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName,P.Category\nORDER BY Number_Comman_Category DESC ;",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 63,
+                "end": 73,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "62c944bc-e27d-43d1-a4e9-63a64b8f6962"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 306
+                        },
+                        "contentStart": 77,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 306,
+                            "length": 2
+                        },
+                        "contentStart": 305,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "62c944bc-e27d-43d1-a4e9-63a64b8f6962",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "259965"
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "179970"
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "159980"
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "149985"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Total_Sales",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 4 records retrieved in 2.271ms"
+                    },
+                    "totalRowCount": 4,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 7. How does the performance of products from different suppliers compare?\nSELECT SUP.SupplierName, SUM(TotalAmount) AS Total_Sales\nFROM sales AS S\nJOIN products AS P\nON S.ProductID = P.ProductID\nJOIN suppliers as SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName \nORDER BY Total_Sales DESC",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 74,
+                "end": 81,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "3e2ecff0-2b48-4382-b23e-7357d13e55dc"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 256
+                        },
+                        "contentStart": 80,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 256,
+                            "length": 2
+                        },
+                        "contentStart": 255,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "3e2ecff0-2b48-4382-b23e-7357d13e55dc",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Training",
+                            "2": 5
+                        },
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Hiking",
+                            "2": 5
+                        },
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Running",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Skateboarding",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Running",
+                            "2": 5
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Casual",
+                            "2": 5
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "Casual",
+                            "2": 5
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "Tennis",
+                            "2": 5
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "Fitness",
+                            "2": 5
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "Fashion",
+                            "2": 5
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Category",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Distribution",
+                            "field": "2",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 10 records retrieved in 2.776ms"
+                    },
+                    "totalRowCount": 10,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 8. What is the distribution of product categories provided by each supplier?\nSELECT SUP.SupplierName, P.Category, COUNT(*) AS Distribution\nFROM products AS P\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName , P.Category ",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 82,
+                "end": 102,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "b4c86c37-4dff-42de-f475-cdb14dcbcbfb"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 626
+                        },
+                        "contentStart": 133,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 626,
+                            "length": 2
+                        },
+                        "contentStart": 625,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "b4c86c37-4dff-42de-f475-cdb14dcbcbfb",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": 2
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": 1
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": 1
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": 1
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Product_Count",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 4 records retrieved in 5.403ms"
+                    },
+                    "totalRowCount": 4,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 9. How many products from each supplier are in the top 10 best-selling products?\nWITH TOP_10 AS (\n    SELECT ProductID, SUM(TotalAmount) AS Total_Sales\n    FROM sales \n    GROUP BY ProductID\n    ORDER BY Total_Sales DESC Limit 10\n)\nSELECT SUP.SupplierName, COUNT(*) AS Product_Count\nFROM TOP_10 AS T\nJOIN products as P\nON T.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON P.SupplierID = SUP.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Product_Count DESC;",
+                    "updatable": false
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 103,
+                "end": 112,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "aad9a24a-0266-4ef5-b66f-00600fffff6a"
+                    ]
+                },
+                "currentHeight": 261,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 303
+                        },
+                        "contentStart": 80,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 303,
+                            "length": 2
+                        },
+                        "contentStart": 302,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "d7a07c48-e12f-4090-87a3-2dc5f1f74628",
+                    "resultId": "aad9a24a-0266-4ef5-b66f-00600fffff6a",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Hiking",
+                            "2": "19997.5000"
+                        },
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": "Running",
+                            "2": "5999.0000"
+                        },
+                        {
+                            "0": "fitness footwear ltd.",
+                            "1": "Casual",
+                            "2": "14998.5000"
+                        },
+                        {
+                            "0": " AthleticZone Corp.",
+                            "1": "Tennis",
+                            "2": "17997.0000"
+                        },
+                        {
+                            "0": "UrbanKicks India",
+                            "1": "Fashion",
+                            "2": "15998.0000"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Category",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Avg_Sales",
+                            "field": "2",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 5 records retrieved in 3.687ms"
+                    },
+                    "totalRowCount": 5,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 10. What is the average sales amount per product category for each supplier?\nSELECT SUP.SupplierName,P.Category,AVG(S.TotalAmount) as Avg_Sales\nFROM sales as S\nJOIN products as P\nON S.ProductID = P.ProductID\nJOIN suppliers AS SUP\nON SUP.SupplierID = P.SupplierID\nGROUP BY SUP.SupplierName,P.Category;",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 113,
+                "end": 113,
+                "language": "mysql",
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 0
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        }
+    ]
+}
