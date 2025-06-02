@@ -1,0 +1,1188 @@
+{
+    "type": "MySQLNotebook",
+    "version": "1.0",
+    "caption": "DB Notebook",
+    "content": "\\about\nUSE sneakers;\n\n\n-- Objective 2: Customer and Product Analysis\n-- 1. What is the average spending per customer?\nSELECT C.FIRSTNAME,AVG(S.TotalAmount) AS avg_spending \nFROM customers AS C\nJOIN sales AS S\nON C.CustomerID = S.CustomerID\nGROUP BY FIRSTNAME\nORDER BY avg_spending DESC;\n\n\n-- 2. Which product is the most frequently purchased by customers?\nSELECT P.ProductName, COUNT(S.ProductID) as Frequent_Perchase\nFROM sales AS S\nJOIN products as P\nON S.ProductID = P.ProductID\nGROUP BY P.ProductName\nORDER BY Frequent_Perchase DESC LIMIT 1;\n\n\n-- 3. How many unique customers made purchases in each city?\nSELECT COUNT(Distinct(S.CustomerID)) AS Cust_Count, C.City \nFROM customers AS C\nJOIN sales as S\nON C.CustomerID = S.CustomerID\nGROUP BY C.City ;\n\n\n-- 4. What is the distribution of product categories purchased by customers?\nSELECT P.Category, COUNT(*) AS Distribution\nFROM products AS P\nJOIN sales AS S\nON P.ProductID = S.ProductID\nGROUP BY Category;\n\n\n-- 5. How many repeat customers are there in the dataset?\nSELECT COUNT(*) AS Repeated_Customer\nFROM(\n    SELECT CustomerId\n    FROM sales\n    GROUP BY CustomerID\n    HAVING COUNT(SaleID) > 1\n)as Repeated;\n\n\n-- 6. What is the average unit price of products purchased by customers?\nSELECT AVG(P.UnitPrice) as Avg_Price\nFROM products as P\nJOIN sales AS S\nON P.ProductID = S.ProductID;\n\n\n-- 7. How does the spending behavior differ between customers from different states?\nSELECT C.State, AVG(S.TotalAmount) as Avg_Spending\nFROM sales AS S\nJOIN customers AS C\nON C.CustomerID = S.CustomerId\nGROUP BY C.State;\n\n\n-- 8. Which supplier provides the most popular products?\nSELECT SUP.SupplierName, COUNT(Distinct S.ProductId) as Product_Count\nFROM products as P\nJOIN sales AS S\nON S.ProductID = P.ProductID\nJOIN suppliers as SUP\nON SUP.SupplierID = P.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Product_Count DESC LIMIT 1;\n\n\n-- 9. What is the most common product category purchased by customers?\nSELECT P.Category , COUNT(S.ProductID) AS Purchased_Count\nFROM sales as S\nJOIN products as P\nON S.ProductID = P.ProductID\nGROUP BY P.Category\nORDER BY Purchased_Count DESC LIMIT 1;\n\n\n-- 10. How many customers purchased more than one type of product?\nSELECT COUNT(*) AS Number_Of_Customer_Purchased_More_than_one_product\nFROM(\n    SELECT S.CustomerID \n    FROM sales AS S\n    JOIN products AS P\n    ON S.ProductID = P.ProductID\n    GROUP BY S.CustomerID\n    HAVING COUNT(Distinct S.ProductID) > 1\n)as multiple_product;",
+    "options": {
+        "tabSize": 4,
+        "indentSize": 4,
+        "insertSpaces": true,
+        "defaultEOL": "LF",
+        "trimAutoWhitespace": true
+    },
+    "viewState": {
+        "cursorState": [
+            {
+                "inSelectionMode": false,
+                "selectionStart": {
+                    "lineNumber": 94,
+                    "column": 22
+                },
+                "position": {
+                    "lineNumber": 94,
+                    "column": 22
+                }
+            }
+        ],
+        "viewState": {
+            "scrollLeft": 0,
+            "firstPosition": {
+                "lineNumber": 69,
+                "column": 1
+            },
+            "firstPositionDeltaTop": -12
+        },
+        "contributionsState": {
+            "editor.contrib.folding": {},
+            "editor.contrib.wordHighlighter": false
+        }
+    },
+    "contexts": [
+        {
+            "state": {
+                "start": 1,
+                "end": 1,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 2,
+                            "content": "Welcome to the MySQL Shell - DB Notebook.\n\nPress Ctrl+Enter to execute the code block.\n\nExecute \\sql to switch to SQL, \\js to JavaScript and \\ts to TypeScript mode.\nExecute \\help or \\? for help;",
+                            "language": "ansi"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 6
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 2,
+                "end": 4,
+                "language": "mysql",
+                "result": {
+                    "type": "text",
+                    "text": [
+                        {
+                            "type": 2,
+                            "index": 0,
+                            "resultId": "76457234-ac56-4c17-8f84-bd408bd67854",
+                            "content": "OK, 0 records retrieved in 0.912ms"
+                        }
+                    ]
+                },
+                "currentHeight": 28,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 13
+                        },
+                        "contentStart": 0,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 13,
+                            "length": 2
+                        },
+                        "contentStart": 12,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": []
+        },
+        {
+            "state": {
+                "start": 5,
+                "end": 14,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "16cc930c-e68a-4582-ac7d-b6672eac0a38"
+                    ]
+                },
+                "currentHeight": 384,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 263
+                        },
+                        "contentStart": 95,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 263,
+                            "length": 2
+                        },
+                        "contentStart": 262,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "16cc930c-e68a-4582-ac7d-b6672eac0a38",
+                    "rows": [
+                        {
+                            "0": "amit",
+                            "1": "23997.0000"
+                        },
+                        {
+                            "0": "Anjali",
+                            "1": "18747.5000"
+                        },
+                        {
+                            "0": "Divya",
+                            "1": "17331.0000"
+                        },
+                        {
+                            "0": "Arun",
+                            "1": "17197.6000"
+                        },
+                        {
+                            "0": "vikrant",
+                            "1": "16283.7143"
+                        },
+                        {
+                            "0": " Preeti",
+                            "1": "14998.0000"
+                        },
+                        {
+                            "0": "nisha",
+                            "1": "14997.5000"
+                        },
+                        {
+                            "0": "Rahul",
+                            "1": "14331.5000"
+                        },
+                        {
+                            "0": "Arjun",
+                            "1": "11998.0000"
+                        },
+                        {
+                            "0": "Sanjay",
+                            "1": "10998.5000"
+                        },
+                        {
+                            "0": "Sunita",
+                            "1": "7999.0000"
+                        },
+                        {
+                            "0": "Preeti",
+                            "1": "7999.0000"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "FIRSTNAME",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "avg_spending",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 12 records retrieved in 16.111ms"
+                    },
+                    "totalRowCount": 12,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- Objective 2: Customer and Product Analysis\n-- What is the average spending per customer?\nSELECT C.FIRSTNAME,AVG(S.TotalAmount) AS avg_spending \nFROM customers AS C\nJOIN sales AS S\nON C.CustomerID = S.CustomerID\nGROUP BY FIRSTNAME\nORDER BY avg_spending DESC;",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 15,
+                "end": 23,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "987b8757-4304-42e2-b181-89b281966020"
+                    ]
+                },
+                "currentHeight": 122,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 256
+                        },
+                        "contentStart": 67,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 256,
+                            "length": 2
+                        },
+                        "contentStart": 255,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "987b8757-4304-42e2-b181-89b281966020",
+                    "rows": [
+                        {
+                            "0": "RunFast Elite",
+                            "1": 10
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "ProductName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Frequent_Perchase",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 4.948ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 2. Which product is the most frequently purchased by customers?\nSELECT P.ProductName, COUNT(S.ProductID) as Frequent_Perchase\nFROM sales AS S\nJOIN products as P\nON S.ProductID = P.ProductID\nGROUP BY P.ProductName\nORDER BY Frequent_Perchase DESC LIMIT 1;",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 24,
+                "end": 31,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "624ca9d0-6048-4798-8725-937d6c4b94f6"
+                    ]
+                },
+                "currentHeight": 544,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 205
+                        },
+                        "contentStart": 61,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 205,
+                            "length": 2
+                        },
+                        "contentStart": 204,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "624ca9d0-6048-4798-8725-937d6c4b94f6",
+                    "rows": [
+                        {
+                            "0": 2,
+                            "1": " Ahmedabad"
+                        },
+                        {
+                            "0": 2,
+                            "1": " bangalore"
+                        },
+                        {
+                            "0": 3,
+                            "1": " delhi"
+                        },
+                        {
+                            "0": 1,
+                            "1": " Hyderabad"
+                        },
+                        {
+                            "0": 1,
+                            "1": " kolkata"
+                        },
+                        {
+                            "0": 1,
+                            "1": " lucknow"
+                        },
+                        {
+                            "0": 2,
+                            "1": " mumbai"
+                        },
+                        {
+                            "0": 2,
+                            "1": " pune"
+                        },
+                        {
+                            "0": 2,
+                            "1": "Ahmedabad"
+                        },
+                        {
+                            "0": 3,
+                            "1": "Bangalore"
+                        },
+                        {
+                            "0": 2,
+                            "1": "chennai"
+                        },
+                        {
+                            "0": 3,
+                            "1": "delhi"
+                        },
+                        {
+                            "0": 3,
+                            "1": "hyderabad"
+                        },
+                        {
+                            "0": 4,
+                            "1": "jaipur"
+                        },
+                        {
+                            "0": 3,
+                            "1": "kolkata"
+                        },
+                        {
+                            "0": 1,
+                            "1": "lucknow"
+                        },
+                        {
+                            "0": 1,
+                            "1": "Lucknow "
+                        },
+                        {
+                            "0": 3,
+                            "1": "mumbai"
+                        },
+                        {
+                            "0": 5,
+                            "1": "Pune"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Cust_Count",
+                            "field": "0",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "City",
+                            "field": "1",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 19 records retrieved in 1.818ms"
+                    },
+                    "totalRowCount": 19,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 3. How many unique customers made purchases in each city?\nSELECT COUNT(Distinct(S.CustomerID)) AS Cust_Count, C.City \nFROM customers AS C\nJOIN sales as S\nON C.CustomerID = S.CustomerID\nGROUP BY C.City ",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 32,
+                "end": 39,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "4d207fd9-6473-4312-f571-7acd8eff34a8"
+                    ]
+                },
+                "currentHeight": 192,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 203
+                        },
+                        "contentStart": 77,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 203,
+                            "length": 2
+                        },
+                        "contentStart": 202,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "4d207fd9-6473-4312-f571-7acd8eff34a8",
+                    "rows": [
+                        {
+                            "0": "Tennis",
+                            "1": 10
+                        },
+                        {
+                            "0": "Running",
+                            "1": 10
+                        },
+                        {
+                            "0": "Fashion",
+                            "1": 10
+                        },
+                        {
+                            "0": "Casual",
+                            "1": 10
+                        },
+                        {
+                            "0": "Hiking",
+                            "1": 10
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Category",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Distribution",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 5 records retrieved in 6.796ms"
+                    },
+                    "totalRowCount": 5,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 4. What is the distribution of product categories purchased by customers?\nSELECT P.Category, COUNT(*) AS Distribution\nFROM products AS P\nJOIN sales AS S\nON P.ProductID = S.ProductID\nGROUP BY Category",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 40,
+                "end": 49,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "12bc96d2-9253-4af1-e688-1419ae2caad6"
+                    ]
+                },
+                "currentHeight": 92,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 204
+                        },
+                        "contentStart": 58,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 204,
+                            "length": 2
+                        },
+                        "contentStart": 203,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "12bc96d2-9253-4af1-e688-1419ae2caad6",
+                    "rows": [
+                        {
+                            "0": 6
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Repeated_Customer",
+                            "field": "0",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 1.764ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 5. How many repeat customers are there in the dataset?\nSELECT COUNT(*) AS Repeated_Customer\nFROM(\n    SELECT CustomerId\n    FROM sales\n    GROUP BY CustomerID\n    HAVING COUNT(SaleID) > 1\n)as Repeated",
+                    "updatable": true,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 50,
+                "end": 56,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "1af93340-2d80-4047-8c59-6f6dc67877e4"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 174
+                        },
+                        "contentStart": 73,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 174,
+                            "length": 2
+                        },
+                        "contentStart": 173,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "1af93340-2d80-4047-8c59-6f6dc67877e4",
+                    "rows": [
+                        {
+                            "0": "7599.0000"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Avg_Price",
+                            "field": "0",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 3.058ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 6. What is the average unit price of products purchased by customers?\nSELECT AVG(P.UnitPrice) as Avg_Price\nFROM products as P\nJOIN sales AS S\nON P.ProductID = S.ProductID",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 57,
+                "end": 64,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "ff87f4d0-45bc-41ee-90ef-37ab711b994b"
+                    ]
+                },
+                "currentHeight": 36,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 220
+                        },
+                        "contentStart": 85,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 220,
+                            "length": 2
+                        },
+                        "contentStart": 219,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "ff87f4d0-45bc-41ee-90ef-37ab711b994b",
+                    "rows": [
+                        {
+                            "0": "Karnataka",
+                            "1": "16797.6000"
+                        },
+                        {
+                            "0": "Maharashtra",
+                            "1": "12712.6429"
+                        },
+                        {
+                            "0": "Delhi",
+                            "1": "12855.2857"
+                        },
+                        {
+                            "0": "Telangana",
+                            "1": "17997.2000"
+                        },
+                        {
+                            "0": "Gujarat",
+                            "1": "18398.0000"
+                        },
+                        {
+                            "0": "Rajasthan",
+                            "1": "11498.5000"
+                        },
+                        {
+                            "0": "West Bengal",
+                            "1": "13598.4000"
+                        },
+                        {
+                            "0": "Tamil Nadu",
+                            "1": "14997.5000"
+                        },
+                        {
+                            "0": "Uttar Pradesh",
+                            "1": "23997.0000"
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "State",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Avg_Spending",
+                            "field": "1",
+                            "dataType": {
+                                "type": 10,
+                                "flags": [
+                                    "UNSIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 65,
+                                "numericScale": 30,
+                                "parameterFormatType": "TwoOrOneOrZero",
+                                "synonyms": [
+                                    "FIXED",
+                                    "NUMERIC",
+                                    "DEC"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 9 records retrieved in 3.036ms"
+                    },
+                    "totalRowCount": 9,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 7. How does the spending behavior differ between customers from different states?\nSELECT C.State, AVG(S.TotalAmount) as Avg_Spending\nFROM sales AS S\nJOIN customers AS C\nON C.CustomerID = S.CustomerId\nGROUP BY C.State",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 65,
+                "end": 75,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "1150b250-3946-4052-9b31-efea21d4dd24"
+                    ]
+                },
+                "currentHeight": 92,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 308
+                        },
+                        "contentStart": 57,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 308,
+                            "length": 2
+                        },
+                        "contentStart": 307,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "1150b250-3946-4052-9b31-efea21d4dd24",
+                    "rows": [
+                        {
+                            "0": "SportsTrend Enterprises",
+                            "1": 2
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "SupplierName",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Product_Count",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 2.712ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 8. Which supplier provides the most popular products?\nSELECT SUP.SupplierName, COUNT(Distinct S.ProductId) as Product_Count\nFROM products as P\nJOIN sales AS S\nON S.ProductID = P.ProductID\nJOIN suppliers as SUP\nON SUP.SupplierID = P.SupplierID\nGROUP BY SUP.SupplierName\nORDER BY Product_Count DESC LIMIT 1",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 76,
+                "end": 84,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "a40b5673-ca00-4985-cd59-2b9ca9b8a5c1"
+                    ]
+                },
+                "currentHeight": 92,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 251
+                        },
+                        "contentStart": 71,
+                        "state": 0
+                    },
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 251,
+                            "length": 2
+                        },
+                        "contentStart": 250,
+                        "state": 3
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "a40b5673-ca00-4985-cd59-2b9ca9b8a5c1",
+                    "rows": [
+                        {
+                            "0": "Running",
+                            "1": 10
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Category",
+                            "field": "0",
+                            "dataType": {
+                                "type": 17,
+                                "characterMaximumLength": 65535,
+                                "flags": [
+                                    "BINARY",
+                                    "ASCII",
+                                    "UNICODE"
+                                ],
+                                "needsQuotes": true,
+                                "parameterFormatType": "OneOrZero"
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        },
+                        {
+                            "title": "Purchased_Count",
+                            "field": "1",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 2.25ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 9. What is the most common product category purchased by customers?\nSELECT P.Category , COUNT(S.ProductID) AS Purchased_Count\nFROM sales as S\nJOIN products as P\nON S.ProductID = P.ProductID\nGROUP BY P.Category\nORDER BY Purchased_Count DESC LIMIT 1",
+                    "updatable": false,
+                    "fullTableName": ""
+                }
+            ]
+        },
+        {
+            "state": {
+                "start": 85,
+                "end": 94,
+                "language": "mysql",
+                "result": {
+                    "type": "resultIds",
+                    "list": [
+                        "580b7651-8f9f-4af5-d8e8-13dea4702d86"
+                    ]
+                },
+                "currentHeight": 92,
+                "currentSet": 1,
+                "statements": [
+                    {
+                        "delimiter": ";",
+                        "span": {
+                            "start": 0,
+                            "length": 334
+                        },
+                        "contentStart": 67,
+                        "state": 0
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "tabId": "3eeb7630-9c75-47fb-ca08-f3dc49b77e78",
+                    "resultId": "580b7651-8f9f-4af5-d8e8-13dea4702d86",
+                    "rows": [
+                        {
+                            "0": 5
+                        }
+                    ],
+                    "columns": [
+                        {
+                            "title": "Number_Of_Customer_Purchased_More_than_one_product",
+                            "field": "0",
+                            "dataType": {
+                                "type": 4,
+                                "flags": [
+                                    "SIGNED",
+                                    "ZEROFILL"
+                                ],
+                                "numericPrecision": 10,
+                                "parameterFormatType": "OneOrZero",
+                                "synonyms": [
+                                    "INTEGER",
+                                    "INT4"
+                                ]
+                            },
+                            "inPK": false,
+                            "nullable": false,
+                            "autoIncrement": false
+                        }
+                    ],
+                    "executionInfo": {
+                        "text": "OK, 1 record retrieved in 1.635ms"
+                    },
+                    "totalRowCount": 1,
+                    "hasMoreRows": false,
+                    "currentPage": 0,
+                    "index": 0,
+                    "sql": "-- 10. How many customers purchased more than one type of product?\nSELECT COUNT(*) AS Number_Of_Customer_Purchased_More_than_one_product\nFROM(\n    SELECT S.CustomerID \n    FROM sales AS S\n    JOIN products AS P\n    ON S.ProductID = P.ProductID\n    GROUP BY S.CustomerID\n    HAVING COUNT(Distinct S.ProductID) > 1\n)as multiple_product;",
+                    "updatable": true,
+                    "fullTableName": ""
+                }
+            ]
+        }
+    ]
+}
